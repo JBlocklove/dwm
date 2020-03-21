@@ -3,20 +3,26 @@
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+
+// GAPS
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
+
+// BAR
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+
+// FONTS
 static const char *fonts[]           = {
     "Inconsolata:size=10:antialias=true:autohint=true",
 	"siji:size=12:antialias=true:autohint=true"
 };
 static const char dmenufont[]        = "monospace:size=10";
 
-
+// COLORS
 static const char normfgcolor[]      = "#d8dee9";
 static const char normbgcolor[]      = "#2e3440";
 static const char normbordercolor[]  = "#3b4252";
@@ -59,8 +65,6 @@ static const Rule rules[] = {
 	{ "Pavucontrol",		NULL,       NULL,       0,            1,           -1 },
 	{ "Blueman-manager",	NULL,       NULL,       0,            1,           -1 },
 	{ "mpv",				NULL,       NULL,       0,            1,           -1 },
-	//{ "Spotify",			NULL,       NULL,       1 << 7,       0,           -1 },
-	//{ "plexmediaplayer",	NULL,       NULL,       1 << 7,       0,           -1 },
 	{ "Franz",				NULL,       NULL,       1 << 7,       0,           -1 },
 	{ "Signal",				NULL,       NULL,       1 << 7,       0,           -1 },
 	{ "St",					NULL,       "neomutt",  1 << 8,       0,           -1 },
@@ -75,8 +79,10 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "",      tile },    /* first entry is default */
+	{ "",		col },
+	{ "",		bstack },
+	{ "",		bstackhoriz },
 	{ "",      NULL },    /* no layout function means floating behavior */
- 	{ "",      spiral },
 	{ NULL,		 NULL },
 };
 
@@ -95,14 +101,15 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char scratchpadname[] = "scratchpad";
+//static const char *scratchpadcmd[] = { "spotify",NULL };
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 #include "movestack.c"
 #include <X11/XF86keysym.h>
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_d,      spawn,          SHCMD("$HOME/.config/dmenu/scripts/color_dmenu.sh run -c -l 20") },
-	{ MODKEY,				        XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -110,18 +117,15 @@ static Key keys[] = {
 	{ MODKEY,                       XK_l,      shiftview,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_plus,   incnmaster,     {.i = +1 } },
-	{ MODKEY,			            XK_minus,  incnmaster,     {.i = -1 } },
+	{ MODKEY|ShiftMask,				XK_i,	   incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,			    XK_d,	   incnmaster,     {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
-	//{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	//{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	//{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
 	{ MODKEY,                       XK_space,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
+	{ MODKEY,			            XK_f,      togglefullscr,  {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
@@ -131,8 +135,11 @@ static Key keys[] = {
 	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
 	{ MODKEY|ControlMask,			XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
+	{ MODKEY|ShiftMask,				XK_r,	   spawn,		   SHCMD("$HOME/.config/wm/scripts/set_last_wp.sh") },
 
 	// Run Programs
+	{ MODKEY,                       XK_d,      spawn,          SHCMD("$HOME/.config/dmenu/scripts/color_dmenu.sh run -c -l 20") },
+	{ MODKEY,				        XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,						XK_w,		spawn,         SHCMD("urxvt -geometry 100x35 -e ranger $HOME/Pictures/Wallpapers")  },
 	{ MODKEY,						XK_i,		spawn,         SHCMD("qutebrowser")  },
 	{ MODKEY,						XK_s,		spawn,         SHCMD("~/.config/dmenu/scripts/dmenu_ssh.sh")  },
@@ -141,11 +148,14 @@ static Key keys[] = {
 	{ MODKEY,						XK_t,		spawn,         SHCMD("urxvt -geometry 100x35")  },
 	{ ControlMask|Mod1Mask,			XK_l,		spawn,         SHCMD("lock")  },
 	{ MODKEY|ShiftMask,				XK_p,		spawn,         SHCMD("passmenu -c -l 20")  },
-	{0,								XK_Print,   spawn,		   SHCMD("flameshot gui") },
-	{MODKEY,						XK_n,		spawn,		   SHCMD("flash_window") },
+	{ 0,							XK_Print,   spawn,		   SHCMD("flameshot gui") },
+	{ MODKEY,						XK_n,		spawn,		   SHCMD("flash_window") },
+	{ MODKEY,						XK_F7,		spawn,		   SHCMD("$HOME/.config/dmenu/scripts/select_wal_theme.sh") },
+	{ MODKEY,						XK_m,		togglescratch, {.v = scratchpadcmd } },
 
 
 
+	// Tag navigation
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
@@ -156,6 +166,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 
+	// XF86 Keys
 	{ 0,                            XF86XK_AudioMute,        spawn, SHCMD("$HOME/.config/dunst/scripts/volumeControl.sh mute") },
 	{ 0,                            XF86XK_AudioLowerVolume, spawn, SHCMD("$HOME/.config/dunst/scripts/volumeControl.sh down") },
 	{ 0,                            XF86XK_AudioRaiseVolume, spawn, SHCMD("$HOME/.config/dunst/scripts/volumeControl.sh up") },
@@ -165,7 +176,8 @@ static Key keys[] = {
 	{ 0,                            XF86XK_AudioPrev,        spawn, SHCMD("playerctl --player=spotify previous") },
 	{ 0,                            XF86XK_AudioPlay,        spawn, SHCMD("playerctl --player=spotify play-pause") },
 
-	{ MODKEY|ControlMask,           XK_e,      quit,			{0} },
+	// QUIT
+	{ MODKEY|ControlMask,           XK_e,      spawn,			SHCMD("$HOME/.config/dmenu/scripts/dmenu_power.sh") },
 };
 
 /* button definitions */
