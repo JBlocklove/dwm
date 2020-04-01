@@ -6,11 +6,12 @@ This is my fork of suckless' dwm
 * alpha
 * attachbottom
 * autostart
-* bstack
 * cols
 * cyclelayouts
+* fibonacci
 * hide_vacant_tags
 * movestack
 * titlecolor
 * scratchpad
+* status2d
 * vanitygaps
