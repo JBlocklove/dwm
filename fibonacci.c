@@ -17,7 +17,7 @@ fibonacci(Monitor *mon, int s) {
 	}
 
 	nx = mon->wx;
-	ny = mon->gappoh;
+	ny = 0;
 	nw = mon->ww;
 	nh = mon->wh;
 
@@ -54,6 +54,8 @@ fibonacci(Monitor *mon, int s) {
 			{
 				if(n != 1)
 					nw = (mon->ww + mon->gappiv*ie) * mon->mfact;
+				else
+					nw = (mon->ww - mon->gappov*oe);
 				ny = mon->wy + mon->gappoh*oe;
 			}
 			else if(i == 1){
