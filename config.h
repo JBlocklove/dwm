@@ -59,17 +59,18 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class				instance    title       tags mask     isfloating   monitor */
-	{ "URxvt",				NULL,       NULL,       0,            1,           -1 },
-	{ "Galculator",			NULL,       NULL,       0,            1,           -1 },
-	{ "Arandr",				NULL,       NULL,       0,            1,           -1 },
-	{ "Pavucontrol",		NULL,       NULL,       0,            1,           -1 },
-	{ "Blueman-manager",	NULL,       NULL,       0,            1,           -1 },
-	{ "mpv",				NULL,       NULL,       0,            1,           -1 },
-	{ "Sxiv",				NULL,       NULL,       0,            1,           -1 },
-	{ "Franz",				NULL,       NULL,       1 << 7,       0,           -1 },
-	{ "Signal",				NULL,       NULL,       1 << 7,       0,           -1 },
-	{ "St",					NULL,       "neomutt",  1 << 8,       0,           -1 },
+	/* class				instance    title       tags mask   iscentered	isfloating   monitor */
+	{ "URxvt",				NULL,       NULL,       0,            1,			1,           -1 },
+	{ "Galculator",			NULL,       NULL,       0,            1,			1,           -1 },
+	{ "Arandr",				NULL,       NULL,       0,            1,			1,           -1 },
+	{ "Pavucontrol",		NULL,       NULL,       0,            1,			1,           -1 },
+	{ "Blueman-manager",	NULL,       NULL,       0,            1,			1,           -1 },
+	{ "mpv",				NULL,       NULL,       0,            1,			1,           -1 },
+	{ "Sxiv",				NULL,       NULL,       0,            1,			1,           -1 },
+	{ "zoom",				NULL,       NULL,       0,            1,			1,           -1 },
+	{ "Franz",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
+	{ "Signal",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
+	{ "St",					NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
 };
 
 /* layout(s) */
@@ -80,11 +81,11 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 #include "fibonacci.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "",      tile },    /* first entry is default */
-	{ "",		col },
- 	//{ "[@]",      spiral },
  	{ "",      dwindle },
-	{ "",      NULL },    /* no layout function means floating behavior */
+	//{ "",      tile },    /* first entry is default */
+	{ "",		col },
+	{ "",		bstack },
+	//{ "",      NULL },    /* no layout function means floating behavior */
 	{ NULL,		 NULL },
 };
 
@@ -132,12 +133,12 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY|ControlMask,           XK_h,	   focusmon,       {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_l,	   focusmon,       {.i = +1 } },
-	//{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	//{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
 	{ MODKEY|ControlMask,			XK_comma,  cyclelayout,    {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
-	{ MODKEY|ShiftMask,				XK_r,	   spawn,		   SHCMD("$HOME/.config/wm/scripts/set_last_wp.sh") },
+	{ MODKEY|ShiftMask,				XK_r,	   spawn,		   SHCMD("$HOME/.local/bin/wm_set_last_wp") },
 	{ MODKEY|ControlMask,			XK_r,	   quit,		   {0} },
 
 	// Run Programs
@@ -145,19 +146,18 @@ static Key keys[] = {
 	{ MODKEY,				        XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,						XK_w,		spawn,         SHCMD("urxvt -geometry 100x35 -e ranger $HOME/Pictures/Wallpapers")  },
 	{ MODKEY,						XK_i,		spawn,         SHCMD("qutebrowser")  },
-	{ MODKEY,						XK_s,		spawn,         SHCMD("~/.config/dmenu/scripts/dmenu_ssh.sh")  },
+	{ MODKEY,						XK_s,		spawn,         SHCMD("~/.local/bin/dmenu_ssh")  },
 	{ MODKEY,						XK_u,		spawn,         SHCMD("urxvt -geometry 80x40 -e ranger $HOME/Documents")  },
 	{ MODKEY,						XK_c,		spawn,         SHCMD("urxvt -geometry 100x50 -e calcurse")  },
 	{ MODKEY,						XK_t,		spawn,         SHCMD("urxvt -geometry 100x35")  },
 	{ ControlMask|Mod1Mask,			XK_l,		spawn,         SHCMD("lock")  },
 	{ MODKEY|ShiftMask,				XK_p,		spawn,         SHCMD("passmenu -c -l 20")  },
 	{ 0,							XK_Print,   spawn,		   SHCMD("flameshot gui") },
-	{ MODKEY,						XK_n,		spawn,		   SHCMD("flash_window") },
-	{ MODKEY,						XK_F6,		spawn,		   SHCMD("$HOME/.config/wm/scripts/toggle_dpms.sh") },
-	{ MODKEY,						XK_F7,		spawn,		   SHCMD("$HOME/.config/dmenu/scripts/select_wal_theme.sh") },
-	{ MODKEY,						XK_F8,		spawn,		   SHCMD("$HOME/.config/dmenu/scripts/monitor_layout.sh") },
-	{ MODKEY,						XK_F11,		spawn,		   SHCMD("$HOME/.config/dmenu/scripts/dmenu_mount.sh") },
-	{ MODKEY,						XK_F12,		spawn,		   SHCMD("$HOME/.config/dmenu/scripts/dmenu_unmount.sh") },
+	{ MODKEY,						XK_F6,		spawn,		   SHCMD("$HOME/.local/bin/wm_toggle_dpms") },
+	{ MODKEY,						XK_F7,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_wal_theme") },
+	{ MODKEY,						XK_F8,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_monitor") },
+	{ MODKEY,						XK_F11,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_mount") },
+	{ MODKEY,						XK_F12,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_unmount") },
 	{ MODKEY,						XK_m,		togglescratch, {.v = scratchpadcmd } },
 
 
@@ -174,17 +174,17 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                      8)
 
 	// XF86 Keys
-	{ 0,                            XF86XK_AudioMute,        spawn, SHCMD("$HOME/.config/dunst/scripts/volumeControl.sh mute") },
-	{ 0,                            XF86XK_AudioLowerVolume, spawn, SHCMD("$HOME/.config/dunst/scripts/volumeControl.sh down") },
-	{ 0,                            XF86XK_AudioRaiseVolume, spawn, SHCMD("$HOME/.config/dunst/scripts/volumeControl.sh up") },
-	{ 0,                            XF86XK_MonBrightnessUp,  spawn, SHCMD("$HOME/.config/dunst/scripts/brightnessControl.sh up") },
-	{ 0,                            XF86XK_MonBrightnessDown,spawn, SHCMD("$HOME/.config/dunst/scripts/brightnessControl.sh down") },
+	{ 0,                            XF86XK_AudioMute,        spawn, SHCMD("$HOME/.local/bin/dunst_volume_control mute") },
+	{ 0,                            XF86XK_AudioLowerVolume, spawn, SHCMD("$HOME/.local/bin/dunst_volume_control down") },
+	{ 0,                            XF86XK_AudioRaiseVolume, spawn, SHCMD("$HOME/.local/bin/dunst_volume_control up") },
+	{ 0,                            XF86XK_MonBrightnessUp,  spawn, SHCMD("$HOME/.local/bin/dunst_brightness_control up") },
+	{ 0,                            XF86XK_MonBrightnessDown,spawn, SHCMD("$HOME/.local/bin/dunst_brightness_control down") },
 	{ 0,                            XF86XK_AudioNext,        spawn, SHCMD("playerctl --player=spotifyd next") },
 	{ 0,                            XF86XK_AudioPrev,        spawn, SHCMD("playerctl --player=spotifyd previous") },
 	{ 0,                            XF86XK_AudioPlay,        spawn, SHCMD("playerctl --player=spotifyd play-pause") },
 
 	// QUIT
-	{ MODKEY|ControlMask,           XK_e,      spawn,			SHCMD("$HOME/.config/dmenu/scripts/dmenu_power.sh") },
+	{ MODKEY|ControlMask,           XK_e,      spawn,			SHCMD("$HOME/.local/bin/dmenu_power") },
 };
 
 /* button definitions */
