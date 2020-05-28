@@ -50,6 +50,18 @@ static const unsigned int alphas[][3]      = {
 	[SchemeTitle] = { OPAQUE, baralpha, borderalpha },
 };
 
+typedef struct {
+	const char *name;
+	const void *cmd;
+} Sp;
+const char *spcmd1[] = {"urxvt", "-name", "spmusic", "-geometry", "100x35", "-e", "ncmpcpp", NULL };
+const char *spcmd2[] = {"urxvt", "-name", "spnews", "-geometry", "100x35", "-e", "newsboat", NULL };
+static Sp scratchpads[] = {
+	/* name          cmd  */
+	{"spmusic",   spcmd1},
+	{"spnews",    spcmd2},
+};
+
 /* tagging */
 //static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const char *tags[] = { "", "", "", "", "", "", "", "", ""};
@@ -72,6 +84,8 @@ static const Rule rules[] = {
 	{ "Ferdi",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "Signal",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "St",					NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
+	{ NULL,					"spmusic",	NULL,		SPTAG(0),	  1,			1,			 -1 },
+	{ NULL,					"spnews",	NULL,		SPTAG(1),	  1,			1,			 -1 },
 };
 
 /* layout(s) */
@@ -105,12 +119,10 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-c","-l", "20", NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char scratchpadname[] = "ncmpcpp";
-//static const char *scratchpadcmd[] = { "spotify",NULL };
-static const char *scratchpadcmd[] = { "urxvt", "-title", scratchpadname, "-geometry", "100x35", "-e", "ncmpcpp", NULL };
 
 #include "movestack.c"
 #include <X11/XF86keysym.h>
+
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -159,7 +171,8 @@ static Key keys[] = {
 	{ MODKEY,						XK_F8,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_monitor") },
 	{ MODKEY,						XK_F11,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_mount") },
 	{ MODKEY,						XK_F12,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_unmount") },
-	{ MODKEY,						XK_m,		togglescratch, {.v = scratchpadcmd } },
+	{ MODKEY,            			XK_m,  	   togglescratch,  {.ui = 0 } },
+	{ MODKEY,            			XK_n,	   togglescratch,  {.ui = 1 } },
 
 
 
