@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 
 // GAPS
@@ -69,6 +69,7 @@ static const Rule rules[] = {
 	{ "Sxiv",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "zoom",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Franz",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
+	{ "Ferdi",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "Signal",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "St",					NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
 };
@@ -104,9 +105,9 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-c","-l", "20", NULL };
 static const char *termcmd[]  = { "st", NULL };
-static const char scratchpadname[] = "spotify-tui";
+static const char scratchpadname[] = "ncmpcpp";
 //static const char *scratchpadcmd[] = { "spotify",NULL };
-static const char *scratchpadcmd[] = { "urxvt", "-title", scratchpadname, "-geometry", "100x35", "-e", "spt", NULL };
+static const char *scratchpadcmd[] = { "urxvt", "-title", scratchpadname, "-geometry", "100x35", "-e", "ncmpcpp", NULL };
 
 #include "movestack.c"
 #include <X11/XF86keysym.h>
@@ -152,7 +153,7 @@ static Key keys[] = {
 	{ MODKEY,						XK_t,		spawn,         SHCMD("urxvt -geometry 100x35")  },
 	{ ControlMask|Mod1Mask,			XK_l,		spawn,         SHCMD("lock")  },
 	{ MODKEY|ShiftMask,				XK_p,		spawn,         SHCMD("passmenu -c -l 20")  },
-	{ 0,							XK_Print,   spawn,		   SHCMD("flameshot gui") },
+	{ MODKEY,						XK_Print,   spawn,		   SHCMD("maim -u -o -s ~/Pictures/Screenshots/$(date +%s).png") },
 	{ MODKEY,						XK_F6,		spawn,		   SHCMD("$HOME/.local/bin/wm_toggle_dpms") },
 	{ MODKEY,						XK_F7,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_wal_theme") },
 	{ MODKEY,						XK_F8,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_monitor") },
@@ -179,9 +180,9 @@ static Key keys[] = {
 	{ 0,                            XF86XK_AudioRaiseVolume, spawn, SHCMD("$HOME/.local/bin/dunst_volume_control up") },
 	{ 0,                            XF86XK_MonBrightnessUp,  spawn, SHCMD("$HOME/.local/bin/dunst_brightness_control up") },
 	{ 0,                            XF86XK_MonBrightnessDown,spawn, SHCMD("$HOME/.local/bin/dunst_brightness_control down") },
-	{ 0,                            XF86XK_AudioNext,        spawn, SHCMD("playerctl --player=spotifyd next") },
-	{ 0,                            XF86XK_AudioPrev,        spawn, SHCMD("playerctl --player=spotifyd previous") },
-	{ 0,                            XF86XK_AudioPlay,        spawn, SHCMD("playerctl --player=spotifyd play-pause") },
+	{ 0,                            XF86XK_AudioNext,        spawn, SHCMD("playerctl -p mopidy next") },
+	{ 0,                            XF86XK_AudioPrev,        spawn, SHCMD("playerctl -p mopidy previous") },
+	{ 0,                            XF86XK_AudioPlay,        spawn, SHCMD("playerctl -p mopidy play-pause") },
 
 	// QUIT
 	{ MODKEY|ControlMask,           XK_e,      spawn,			SHCMD("$HOME/.local/bin/dmenu_power") },
