@@ -254,7 +254,7 @@ static void zoom(const Arg *arg);
 static void bstack(Monitor *m);
 static void bstackhoriz(Monitor *m);
 
-static void shiftview(const Arg *arg);
+static void shiftviewclients(const Arg *arg);
 
 /* variables */
 static const char broken[] = "broken";
@@ -2427,37 +2427,32 @@ zoom(const Arg *arg)
 	pop(c);
 }
 
-/* stolen from https://github.com/sooriravindra/dwm/blob/master/dwm.c */
 void
-shiftview(const Arg *arg)
+shiftviewclients(const Arg *arg)
 {
-	Arg a;
+	Arg shifted;
 	Client *c;
-	unsigned visible = 0;
-	int i = arg->i;
-	int count = 0;
-	int nextseltags, curseltags = selmon->tagset[selmon->seltags];
+	unsigned int tagmask = 0;
 
-	do {
-		if(i > 0) // left circular shift
-			nextseltags = (curseltags << i) | (curseltags >> (LENGTH(tags) - i));
-
-		else // right circular shift
-			nextseltags = curseltags >> (- i) | (curseltags << (LENGTH(tags) + i));
-
-                // Check if tag is visible
-		for (c = selmon->clients; c && !visible; c = c->next)
-			if (nextseltags & c->tags) {
-				visible = 1;
-				break;
-			}
-		i += arg->i;
-	} while (!visible && ++count < 10);
-
-	if (count < 10) {
-		a.i = nextseltags;
-		view(&a);
+	for (c = selmon->clients; c; c = c->next){
+		tagmask = tagmask | c->tags;
+		tagmask &= 0x1FF;
 	}
+
+
+	shifted.ui = selmon->tagset[selmon->seltags];
+	if (arg->i > 0) // left circular shift
+		do {
+			shifted.ui = (shifted.ui << arg->i)
+			   | (shifted.ui >> (LENGTH(tags) - arg->i));
+		} while (tagmask && !(shifted.ui & tagmask));
+	else // right circular shift
+		do {
+			shifted.ui = (shifted.ui >> (- arg->i)
+			   | shifted.ui << (LENGTH(tags) + arg->i));
+		} while (tagmask && !(shifted.ui & tagmask));
+
+	view(&shifted);
 }
 
 int
@@ -2484,40 +2479,6 @@ main(int argc, char *argv[])
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;
 }
-
-/*
-static void
-bstack(Monitor *m) {
-	int w, h, mh, mx, tx, ty, tw, oe = enablegaps, ie = enablegaps;
-	unsigned int i, n;
-	Client *c;
-
-	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-	if (n == 0)
-		return;
-	if (n > m->nmaster) {
-		mh = m->nmaster ? m->mfact * m->wh : 0;
-		tw = m->ww / (n - m->nmaster);
-		ty = m->wy + mh;
-	} else {
-		mh = m->wh;
-		tw = m->ww;
-		ty = m->wy;
-	}
-	for (i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
-		if (i < m->nmaster) {
-			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
-			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), 0);
-			mx += WIDTH(c);
-		} else {
-			h = m->wh - mh;
-			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), 0);
-			if (tw != m->ww)
-				tx += WIDTH(c);
-		}
-	}
-}
-*/
 
 void
 bstack(Monitor *m)

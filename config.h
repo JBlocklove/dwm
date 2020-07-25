@@ -54,12 +54,21 @@ typedef struct {
 	const char *name;
 	const void *cmd;
 } Sp;
-const char *spcmd1[] = {"urxvt", "-name", "spmusic", "-geometry", "100x35", "-e", "ncmpcpp", NULL };
-const char *spcmd2[] = {"urxvt", "-name", "spnews", "-geometry", "100x35", "-e", "newsboat", NULL };
+//const char *spcmd1[] = {"urxvt", "-name", "spmusic", "-geometry", "100x35", "-e", "ncmpcpp", NULL };
+const char *spcmd1[] = {"st", "-n", "spmusic", "-g", "100x35", "-e", "ncmpcpp", NULL };
+const char *spcmd2[] = {"st", "-n", "spnews", "-g", "100x35", "-e", "newsboat", NULL };
+const char *spcmd3[] = {"st", "-n", "spterm", "-g", "100x35", NULL };
+const char *spcmd4[] = {"st", "-n", "spfm", "-g", "80x40", "-e", "ranger", NULL };
+const char *spcmd5[] = {"st", "-n", "spwal", "-g", "100x35", "-e", "ranger", "/home/jason/Pictures/Wallpapers", NULL };
+const char *spcmd6[] = {"st", "-n", "spcal", "-g", "100x50", "-e", "calcurse", NULL };
 static Sp scratchpads[] = {
 	/* name          cmd  */
-	{"spmusic",   spcmd1},
-	{"spnews",    spcmd2},
+	{"spmusic",		spcmd1},
+	{"spnews",		spcmd2},
+	{"spterm",		spcmd3},
+	{"spfm",		spcmd4},
+	{"spwal",		spcmd5},
+	{"spcal",		spcmd6},
 };
 
 /* tagging */
@@ -86,6 +95,10 @@ static const Rule rules[] = {
 	{ "St",					NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
 	{ NULL,					"spmusic",	NULL,		SPTAG(0),	  1,			1,			 -1 },
 	{ NULL,					"spnews",	NULL,		SPTAG(1),	  1,			1,			 -1 },
+	{ NULL,					"spterm",	NULL,		SPTAG(2),	  1,			1,			 -1 },
+	{ NULL,					"spfm",		NULL,		SPTAG(3),	  1,			1,			 -1 },
+	{ NULL,					"spwal",	NULL,		SPTAG(4),	  1,			1,			 -1 },
+	{ NULL,					"spcal",	NULL,		SPTAG(5),	  1,			1,			 -1 },
 };
 
 /* layout(s) */
@@ -125,56 +138,54 @@ static const char *termcmd[]  = { "st", NULL };
 
 
 static Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      shiftview,      {.i = -1 } },
-	{ MODKEY,                       XK_l,      shiftview,      {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
-	{ MODKEY|ShiftMask,				XK_i,	   incnmaster,     {.i = +1 } },
-	{ MODKEY|ShiftMask,			    XK_d,	   incnmaster,     {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY|ShiftMask,             XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
-	//{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,			            XK_f,      togglefullscr,  {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY|ControlMask,           XK_h,	   focusmon,       {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_l,	   focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     {0} },
-	{ MODKEY|ControlMask,			XK_comma,  cyclelayout,    {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
-	{ MODKEY|ShiftMask,				XK_r,	   spawn,		   SHCMD("$HOME/.local/bin/wm_set_last_wp") },
-	{ MODKEY|ControlMask,			XK_r,	   quit,		   {0} },
+	/* modifier                     key        function				argument */
+	{ MODKEY,                       XK_b,      togglebar,      		{0} },
+	{ MODKEY,                       XK_j,      focusstack,     		{.i = +1 } },
+	{ MODKEY,                       XK_k,      focusstack,     		{.i = -1 } },
+	{ MODKEY,                       XK_h,      shiftviewclients,    {.i = -1 } },
+	{ MODKEY,                       XK_l,      shiftviewclients,	{.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_j,      movestack,			{.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      movestack,      		{.i = -1 } },
+	{ MODKEY|ShiftMask,				XK_i,	   incnmaster,     		{.i = +1 } },
+	{ MODKEY|ShiftMask,			    XK_d,	   incnmaster,     		{.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_h,      setmfact,       		{.f = -0.05} },
+	{ MODKEY|ShiftMask,             XK_l,      setmfact,       		{.f = +0.05} },
+	{ MODKEY,                       XK_Tab,    view,           		{0} },
+	{ MODKEY|ShiftMask,             XK_q,      killclient,     		{0} },
+	//{ MODKEY,                       XK_space,  setlayout,			{0} },
+	{ MODKEY|ShiftMask,             XK_space,  togglefloating,		{0} },
+	{ MODKEY,			            XK_f,      togglefullscr,  		{0} },
+	{ MODKEY,                       XK_0,      view,           		{.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,      tag,            		{.ui = ~0 } },
+	{ MODKEY|ControlMask,           XK_h,	   focusmon,       		{.i = -1 } },
+	{ MODKEY|ControlMask,           XK_l,	   focusmon,       		{.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         		{.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period, tagmon,         		{.i = +1 } },
+	{ MODKEY|Mod1Mask,              XK_0,      togglegaps,     		{0} },
+	{ MODKEY|ControlMask,			XK_comma,  cyclelayout,    		{.i = -1 } },
+	{ MODKEY|ControlMask,           XK_period, cyclelayout,    		{.i = +1 } },
+	{ MODKEY|ShiftMask,				XK_r,	   spawn,		   		SHCMD("$HOME/.local/bin/wm_set_last_wp") },
+	{ MODKEY|ControlMask,			XK_r,	   quit,		   		{0} },
 
 	// Run Programs
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,				        XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,						XK_w,		spawn,         SHCMD("urxvt -geometry 100x35 -e ranger $HOME/Pictures/Wallpapers")  },
-	{ MODKEY,						XK_i,		spawn,         SHCMD("qutebrowser")  },
-	{ MODKEY,						XK_s,		spawn,         SHCMD("~/.local/bin/dmenu_ssh")  },
-	{ MODKEY,						XK_u,		spawn,         SHCMD("urxvt -geometry 80x40 -e ranger $HOME/Documents")  },
-	{ MODKEY,						XK_c,		spawn,         SHCMD("urxvt -geometry 100x50 -e calcurse")  },
-	{ MODKEY,						XK_t,		spawn,         SHCMD("urxvt -geometry 100x35")  },
-	{ ControlMask|Mod1Mask,			XK_l,		spawn,         SHCMD("lock")  },
-	{ MODKEY|ShiftMask,				XK_p,		spawn,         SHCMD("passmenu -c -l 20")  },
-	{ MODKEY,						XK_Print,   spawn,		   SHCMD("maim -u -o -s ~/Pictures/Screenshots/$(date +%s).png") },
-	{ MODKEY,						XK_F6,		spawn,		   SHCMD("$HOME/.local/bin/wm_toggle_dpms") },
-	{ MODKEY,						XK_F7,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_wal_theme") },
-	{ MODKEY,						XK_F8,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_monitor") },
-	{ MODKEY,						XK_F11,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_mount") },
-	{ MODKEY,						XK_F12,		spawn,		   SHCMD("$HOME/.local/bin/dmenu_unmount") },
-	{ MODKEY,            			XK_m,  	   togglescratch,  {.ui = 0 } },
-	{ MODKEY,            			XK_n,	   togglescratch,  {.ui = 1 } },
-
-
+	{ MODKEY,                       XK_d,      spawn,          		{.v = dmenucmd } },
+	{ MODKEY,				        XK_Return, spawn,          		{.v = termcmd } },
+	{ MODKEY,						XK_i,		spawn,         		SHCMD("qutebrowser")  },
+	{ MODKEY,						XK_s,		spawn,         		SHCMD("~/.local/bin/dmenu_ssh")  },
+	{ ControlMask|Mod1Mask,			XK_l,		spawn,         		SHCMD("lock")  },
+	{ MODKEY|ShiftMask,				XK_p,		spawn,         		SHCMD("passmenu -c -l 20")  },
+	{ MODKEY,						XK_Print,   spawn,		   		SHCMD("maim -u -o -s ~/Pictures/Screenshots/$(date +%s).png") },
+	{ MODKEY,						XK_F6,		spawn,		   		SHCMD("$HOME/.local/bin/wm_toggle_dpms") },
+	{ MODKEY,						XK_F7,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_wal_theme") },
+	{ MODKEY,						XK_F8,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_monitor") },
+	{ MODKEY,						XK_F11,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_mount") },
+	{ MODKEY,						XK_F12,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_unmount") },
+	{ MODKEY,            			XK_m,		togglescratch,		{.ui = 0 } },
+	{ MODKEY,            			XK_n,	    togglescratch,  	{.ui = 1 } },
+	{ MODKEY,						XK_u,		togglescratch,  	{.ui = 3 } },
+	{ MODKEY,						XK_c,		togglescratch,  	{.ui = 5 } },
+	{ MODKEY,						XK_t,		togglescratch,  	{.ui = 2 } },
+	{ MODKEY,						XK_w,		togglescratch,  	{.ui = 4 } },
 
 	// Tag navigation
 	TAGKEYS(                        XK_1,                      0)
@@ -198,7 +209,7 @@ static Key keys[] = {
 	{ 0,                            XF86XK_AudioPlay,        spawn, SHCMD("playerctl -p mopidy play-pause") },
 
 	// QUIT
-	{ MODKEY|ControlMask,           XK_e,      spawn,			SHCMD("$HOME/.local/bin/dmenu_power") },
+	{ MODKEY|ControlMask,           XK_e,      spawn,				SHCMD("$HOME/.local/bin/dmenu_power") },
 };
 
 /* button definitions */

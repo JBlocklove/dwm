@@ -14,6 +14,6 @@ This is my fork of suckless' dwm
 * hide_vacant_tags
 * movestack
 * titlecolor
-* scratchpad
+* scratchpads
 * status2d
 * vanitygaps
