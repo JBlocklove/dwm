@@ -91,6 +91,7 @@ static const Rule rules[] = {
 	{ "zoom",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Franz",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "Ferdi",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
+	{ "discord",			NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "Signal",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "St",					NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
 	{ NULL,					"spmusic",	NULL,		SPTAG(0),	  1,			1,			 -1 },
