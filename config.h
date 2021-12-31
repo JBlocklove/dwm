@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 
 // GAPS
@@ -24,15 +24,15 @@ static const char *fonts[]           = {
 static const char dmenufont[]        = "monospace:size=10";
 
 // COLORS
-static const char normfgcolor[]      = "#d8dee9";
-static const char normbgcolor[]      = "#2e3440";
-static const char normbordercolor[]  = "#3b4252";
-static const char selfgcolor[]       = "#81a1c1";
-static const char selbgcolor[]       = "#2e3440";
-static const char selbordercolor[]   = "#4c739a";
-static const char titlefgcolor[]     = "#d8dee9";
-static const char titlebgcolor[]     = "#2e3440";
-static const char titlebordercolor[] = "#2e3440";
+static const char normfgcolor[]      = "#bfbfbf";
+static const char normbgcolor[]      = "#262626";
+static const char normbordercolor[]  = "#262626";
+static const char selfgcolor[]       = "#ffffff";
+static const char selbgcolor[]       = "#262626";
+static const char selbordercolor[]   = "#666666";
+static const char titlefgcolor[]     = "#ffffff";
+static const char titlebgcolor[]     = "#262626";
+static const char titlebordercolor[] = "#262626";
 static const char *colors[][3]       = {
 	/*                fg            bg                border   */
 	[SchemeNorm]  = { normfgcolor,  normbgcolor,      normbordercolor },
@@ -40,8 +40,8 @@ static const char *colors[][3]       = {
 	[SchemeTitle] = { titlefgcolor, titlebordercolor, titlebordercolor },
 };
 
-static const unsigned int baralpha = 0xc0;
-static const unsigned int borderalpha = 0xc0;
+static const unsigned int baralpha = 0x90;
+static const unsigned int borderalpha = 0x90;
 
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -81,7 +81,6 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class				instance    title       tags mask   iscentered	isfloating   monitor */
-	{ "URxvt",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Galculator",			NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Arandr",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Pavucontrol",		NULL,       NULL,       0,            1,			1,           -1 },
@@ -89,8 +88,6 @@ static const Rule rules[] = {
 	{ "mpv",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Sxiv",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "zoom",				NULL,       NULL,       0,            1,			1,           -1 },
-	{ "Franz",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
-	{ "Ferdi",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "discord",			NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "Signal",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
 	{ "St",					NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
@@ -106,6 +103,7 @@ static const Rule rules[] = {
 static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
+static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 #include "fibonacci.c"
 static const Layout layouts[] = {
