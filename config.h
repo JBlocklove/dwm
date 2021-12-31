@@ -171,7 +171,7 @@ static Key keys[] = {
 	// Run Programs
 	{ MODKEY,                       XK_d,      spawn,          		{.v = dmenucmd } },
 	{ MODKEY,				        XK_Return, spawn,          		{.v = termcmd } },
-	{ MODKEY,						XK_i,		spawn,         		SHCMD("qutebrowser")  },
+	{ MODKEY,						XK_i,		spawn,         		SHCMD("firefox")  },
 	{ MODKEY,						XK_s,		spawn,         		SHCMD("~/.local/bin/dmenu_ssh")  },
 	{ ControlMask|Mod1Mask,			XK_l,		spawn,         		SHCMD("lock")  },
 	{ MODKEY|ShiftMask,				XK_p,		spawn,         		SHCMD("passmenu -c -l 20")  },
