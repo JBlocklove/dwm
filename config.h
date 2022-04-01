@@ -129,7 +129,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-c","-l", "20", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-c","-l", "20", "-z", "500", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 #include "movestack.c"
@@ -172,7 +172,7 @@ static Key keys[] = {
 	{ MODKEY,						XK_i,		spawn,         		SHCMD("firefox")  },
 	{ MODKEY,						XK_s,		spawn,         		SHCMD("~/.local/bin/dmenu_ssh")  },
 	{ ControlMask|Mod1Mask,			XK_l,		spawn,         		SHCMD("lock")  },
-	{ MODKEY|ShiftMask,				XK_p,		spawn,         		SHCMD("passmenu -c -l 20")  },
+	{ MODKEY|ShiftMask,				XK_p,		spawn,         		SHCMD("passmenu -c -l 20 -z 500")  },
 	{ MODKEY,						XK_Print,   spawn,		   		SHCMD("maim -u -o -s ~/Pictures/Screenshots/$(date +%s).png") },
 	{ MODKEY,						XK_F6,		spawn,		   		SHCMD("$HOME/.local/bin/wm_toggle_dpms") },
 	{ MODKEY,						XK_F7,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_wal_theme") },
