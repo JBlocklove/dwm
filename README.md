@@ -8,6 +8,7 @@ This is my fork of suckless' dwm
 * autostart
 * bottomstack
 * center - modified slightly
+* centeredwindowname
 * cols
 * cyclelayouts
 * fibonacci
