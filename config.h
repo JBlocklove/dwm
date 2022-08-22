@@ -18,8 +18,8 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 
 // FONTS
 static const char *fonts[]           = {
-    "IBM Plex Mono:size=9:antialias=true:autohint=true",
-	"siji:size=12:antialias=true:autohint=true"
+    "IBM Plex Mono:size=11:antialias=true:autohint=true",
+	"siji:size=14:antialias=true:autohint=true"
 };
 static const char dmenufont[]        = "monospace:size=10";
 
@@ -74,6 +74,7 @@ static Sp scratchpads[] = {
 /* tagging */
 //static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 static const char *tags[] = { "", "", "", "", "", "", "", "", ""};
+//static const char *tags[] = { "", "", "", "", "", "", "", "", ""};
 
 static const Rule rules[] = {
 	/* xprop(1):
