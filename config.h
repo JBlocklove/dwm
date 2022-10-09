@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 
 // GAPS
@@ -18,21 +18,20 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 
 // FONTS
 static const char *fonts[]           = {
-    "IBM Plex Mono:size=11:antialias=true:autohint=true",
+    "JetBrainsMono:size=11:antialias=true:autohint=true",
 	"siji:size=14:antialias=true:autohint=true"
 };
-static const char dmenufont[]        = "monospace:size=10";
 
 // COLORS
-static const char normfgcolor[]      = "#bfbfbf";
-static const char normbgcolor[]      = "#262626";
-static const char normbordercolor[]  = "#262626";
-static const char selfgcolor[]       = "#ffffff";
-static const char selbgcolor[]       = "#262626";
-static const char selbordercolor[]   = "#666666";
-static const char titlefgcolor[]     = "#ffffff";
-static const char titlebgcolor[]     = "#262626";
-static const char titlebordercolor[] = "#262626";
+static const char normfgcolor[]      = "#b4a4f4";
+static const char normbgcolor[]      = "#212337";
+static const char normbordercolor[]  = "#212337";
+static const char selfgcolor[]       = "#2df4c0";
+static const char selbgcolor[]       = "#212337";
+static const char selbordercolor[]   = "#04d1f9";
+static const char titlefgcolor[]     = "#e4f3fa";
+static const char titlebgcolor[]     = "#212337";
+static const char titlebordercolor[] = "#212337";
 static const char *colors[][3]       = {
 	/*                fg            bg                border   */
 	[SchemeNorm]  = { normfgcolor,  normbgcolor,      normbordercolor },
@@ -72,8 +71,8 @@ static Sp scratchpads[] = {
 };
 
 /* tagging */
-//static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tags[] = { "", "", "", "", "", "", "", "", ""};
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+//static const char *tags[] = { "", "", "", "", "", "", "", "", ""};
 //static const char *tags[] = { "", "", "", "", "", "", "", "", ""};
 
 static const Rule rules[] = {
@@ -89,9 +88,8 @@ static const Rule rules[] = {
 	{ "mpv",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Sxiv",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "zoom",				NULL,       NULL,       0,            1,			1,           -1 },
-	{ "discord",			NULL,       NULL,       1 << 7,       0,			0,           -1 },
-	{ "Ferdium",			NULL,       NULL,       1 << 7,       0,			0,           -1 },
-	{ "Signal",				NULL,       NULL,       1 << 7,       0,			0,           -1 },
+	{ "Ferdium",			NULL,       NULL,       1 << 8,       0,			0,           -1 },
+	{ "Signal",				NULL,       NULL,       1 << 8,       0,			0,           -1 },
 	{ "St",					NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
 	{ NULL,					"spmusic",	NULL,		SPTAG(0),	  1,			1,			 -1 },
 	{ NULL,					"spnews",	NULL,		SPTAG(1),	  1,			1,			 -1 },
@@ -111,10 +109,10 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
 	/* symbol     arrange function */
  	{ "",      dwindle },
-	//{ "",      tile },    /* first entry is default */
 	{ "",		col },
 	{ "",		bstack },
-	//{ "",      NULL },    /* no layout function means floating behavior */
+	{ "",      centeredmaster },
+	//{ ">M>",      centeredfloatingmaster },
 	{ NULL,		 NULL },
 };
 
@@ -143,8 +141,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,      togglebar,      		{0} },
 	{ MODKEY,                       XK_j,      focusstack,     		{.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     		{.i = -1 } },
-	{ MODKEY,                       XK_h,      shiftviewclients,    {.i = -1 } },
-	{ MODKEY,                       XK_l,      shiftviewclients,	{.i = +1 } },
+	{ MODKEY,                       XK_h,      viewprev,			{0} },
+	{ MODKEY,                       XK_l,      viewnext,	{0} },
 	{ MODKEY|ShiftMask,             XK_j,      movestack,			{.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_k,      movestack,      		{.i = -1 } },
 	{ MODKEY|ShiftMask,				XK_i,	   incnmaster,     		{.i = +1 } },
