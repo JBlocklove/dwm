@@ -81,7 +81,6 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class				instance    title       tags mask   iscentered	isfloating   monitor */
-	{ "Galculator",			NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Arandr",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Pavucontrol",		NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Blueman-manager",	NULL,       NULL,       0,            1,			1,           -1 },
@@ -173,7 +172,7 @@ static Key keys[] = {
 	{ MODKEY,						XK_s,		spawn,         		SHCMD("~/.local/bin/dmenu_ssh")  },
 	{ ControlMask|Mod1Mask,			XK_l,		spawn,         		SHCMD("lock")  },
 	{ MODKEY|ShiftMask,				XK_p,		spawn,         		SHCMD("passmenu -c -l 20 -z 500")  },
-	{ MODKEY,						XK_Print,   spawn,		   		SHCMD("maim -u -o -s ~/Pictures/Screenshots/$(date +%s).png") },
+	{ MODKEY,						XK_Print,   spawn,		   		SHCMD("maim_screenshot") },
 	{ MODKEY,						XK_F6,		spawn,		   		SHCMD("$HOME/.local/bin/wm_toggle_dpms") },
 	{ MODKEY,						XK_F7,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_wal_theme") },
 	{ MODKEY,						XK_F8,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_monitor") },
