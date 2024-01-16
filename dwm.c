@@ -160,6 +160,7 @@ static void checkotherwm(void);
 static void cleanup(void);
 static void cleanupmon(Monitor *mon);
 static void clientmessage(XEvent *e);
+static void col(Monitor *);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
@@ -1667,6 +1668,43 @@ sendmon(Client *c, Monitor *m)
 	setclienttagprop(c);
 	focus(NULL);
 	arrange(NULL);
+}
+
+void
+col(Monitor *m)
+{
+	unsigned int i, n, h, w, x, y,mw, r, oe = enablegaps, ie = enablegaps;
+	Client *c;
+
+	for(n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if(n == 0)
+		return;
+
+	if (smartgaps == n) {
+		oe = 0;
+	}
+
+    if(n > m->nmaster){
+        mw = m->nmaster ? (m->ww + m->gappiv*ie) * m->mfact : 0;
+	}
+    else{
+        mw = m->ww - 2*m->gappov*oe + m->gappiv*ie;
+	}
+	for(i = x = 0, y = m->gappoh*oe, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		if(i < m->nmaster) {
+			r = MIN(n,m->nmaster) - i;
+			w = (mw - x - m->gappih*ie * (r-1)) / r;
+			//w = (mw - x - m->gappoh*oe - m->gappih*ie * (r-1)) / r;
+            resize(c, x + m->wx + m->gappov*oe, m->wy + m->gappoh*oe, w - (2*c->bw) - m->gappiv*ie, m->wh - (2*c->bw) - 2*m->gappoh*oe, False);
+			x += WIDTH(c) + m->gappih*ie;
+		}
+		else {
+			r = n - i;
+			h = (m->wh - y - m->gappoh*oe - m->gappih*ie * (r-1)) / r;
+			resize(c, x + m->wx + m->gappov*oe, m->wy + y, m->ww - x  - (2*c->bw) - 2*m->gappov*oe, h - (2*c->bw), False);
+			y += HEIGHT(c) + m->gappoh*ie;
+		}
+	}
 }
 
 void

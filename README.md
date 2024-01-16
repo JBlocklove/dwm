@@ -6,6 +6,7 @@ This is my fork of suckless' dwm
 - [adjacenttag](https://dwm.suckless.org/patches/adjacenttag/) -- done
 - [attachbottom](https://dwm.suckless.org/patches/attachbottom/) -- done
 - [center](https://dwm.suckless.org/patches/center/) -- done
+- [columns](https://dwm.suckless.org/patches/columns/) -- done (modified to add gaps, almost matches but not quite right)
 - [cyclelayouts](https://dwm.suckless.org/patches/cyclelayouts/) -- done
 - [defaultlayoutpermonitor](https://dwm.suckless.org/patches/defaultlayoutpermonitor/)
 - [fixmultimon](https://dwm.suckless.org/patches/fixmultimon/) -- patched but not notably tested
