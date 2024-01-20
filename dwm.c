@@ -267,7 +267,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[ConfigureRequest] = configurerequest,
 	[ConfigureNotify] = configurenotify,
 	[DestroyNotify] = destroynotify,
-	[EnterNotify] = enternotify,
+	//[EnterNotify] = enternotify,
 	[Expose] = expose,
 	[FocusIn] = focusin,
 	[KeyPress] = keypress,
@@ -1685,7 +1685,7 @@ col(Monitor *m)
 	}
 
     if(n > m->nmaster){
-        mw = m->nmaster ? (m->ww + m->gappiv*ie) * m->mfact : 0;
+        mw = m->nmaster ? (m->ww - m->gappiv*ie) * m->mfact : 0;
 	}
     else{
         mw = m->ww - 2*m->gappov*oe + m->gappiv*ie;
@@ -1702,7 +1702,7 @@ col(Monitor *m)
 			r = n - i;
 			h = (m->wh - y - m->gappoh*oe - m->gappih*ie * (r-1)) / r;
 			resize(c, x + m->wx + m->gappov*oe, m->wy + y, m->ww - x  - (2*c->bw) - 2*m->gappov*oe, h - (2*c->bw), False);
-			y += HEIGHT(c) + m->gappoh*ie;
+			y += HEIGHT(c) + m->gappoh*oe;
 		}
 	}
 }

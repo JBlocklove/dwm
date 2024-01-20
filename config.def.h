@@ -27,7 +27,7 @@ static const char *colors[][3] = {
 	[SchemeTitle] = { titlefgcolor, titlebordercolor, titlebordercolor },
 };
 
-static const unsigned int gap		= 10;		/* gap between windows */
+static const unsigned int gap		= 12;		/* gap between windows */
 static const unsigned int gappih    = gap;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = gap;       /* vert inner gap between windows */
 static const unsigned int gappoh    = gap;       /* horiz outer gap between windows and screen edge */
@@ -57,7 +57,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -119,9 +119,6 @@ static const Key keys[] = {
 	{ MODKEY|Mod1Mask,			    XK_d,	   incnmaster,     		{.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_h,      setmfact,       		{.f = -0.05} },
 	{ MODKEY|ShiftMask,             XK_l,      setmfact,       		{.f = +0.05} },
-	{ MODKEY|Mod1Mask,				XK_k,      setcfact,			{.f = +0.25} },
-	{ MODKEY|Mod1Mask,				XK_j,      setcfact,       		{.f = -0.25} },
-	{ MODKEY|Mod1Mask,				XK_o,      setcfact,       		{.f =  0.00} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     		{0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating,		{0} },
 	{ MODKEY,			            XK_f,      togglefullscr,  		{0} },
