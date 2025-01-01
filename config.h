@@ -16,7 +16,7 @@ static const char normbgcolor[]      = "#212337";
 static const char normbordercolor[]  = "#212337";
 static const char selfgcolor[]       = "#2df4c0";
 static const char selbgcolor[]       = "#212337";
-static const char selbordercolor[]   = "#04d1f9";
+static const char selbordercolor[]   = "#04dff9";
 static const char titlefgcolor[]     = "#e4f3fa";
 static const char titlebgcolor[]     = "#212337";
 static const char titlebordercolor[] = "#212337";
@@ -49,16 +49,15 @@ static const Rule rules[] = {
 	{ "mpv",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Sxiv",				NULL,       NULL,       0,            1,			1,           -1 },
 	{ "zoom",				NULL,       NULL,       0,            1,			1,           -1 },
-	{ "Chromium",			NULL,       NULL,       0,            1,			1,           -1 },
 	{ "Ferdium",			NULL,       NULL,       1 << 8,       0,			0,           -1 },
 	{ "Signal",				NULL,       NULL,       1 << 8,       0,			0,           -1 },
-	{ "St",					NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
-	{ "St",					"st_float",	NULL,		0,			  1,			1,			 -1 },
+	{ "Alacritty",			NULL,       "neomutt",  1 << 8,       0,			0,           -1 },
+	{ "Alacritty",			"floatterm",	NULL,		0,			  1,			1,			 -1 },
 };
 
 /* layout(s) */
 static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
+static const int nmaster     = 0;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
@@ -69,7 +68,7 @@ static const Layout layouts[] = {
 	/* symbol     arrange function */
  	{ "",      dwindle },
 	{ "",		col },
-	{ "",      centeredmaster },
+	//{ "",      centeredmaster },
 	//{ "[]=",      tile },    /* first entry is default */
 	//{ "[M]",      monocle },
 	//{ "[@]",      spiral },
@@ -101,7 +100,8 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-c","-l", "20", "-z", "500", NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *roficmd[] = { "rofi", "-show", "run", "-display-run", "''", "-theme-str", "'#textbox-prompt-colon { enabled: false; }'", "-monitor", "-4", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
 
 #include "movestack.c"
 #include <X11/XF86keysym.h>
@@ -127,24 +127,34 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,			XK_r,	   quit,		   		{0} },
 
 	// Run Programs
-	{ MODKEY,                       XK_d,      spawn,				{.v = dmenucmd } },
+	//{ MODKEY,                       XK_d,      spawn,				{.v = dmenucmd } },
+	//{ MODKEY,                       XK_d,      spawn,				{.v = roficmd } },
+	{ MODKEY,                       XK_d,      spawn,				SHCMD("rofi -show run -display-run '' -theme-str '#textbox-prompt-colon { enabled: false; }' -monitor -4")  },
 	{ MODKEY,						XK_Return, spawn,          		{.v = termcmd } },
 	{ MODKEY,                       XK_i,      spawn,		   		SHCMD("firefox") },
-	{ MODKEY,						XK_s,		spawn,         		SHCMD("~/.local/bin/dmenu_ssh")  },
+	//{ MODKEY,						XK_s,		spawn,         		SHCMD("~/.local/bin/dmenu_ssh")  },
+	{ MODKEY,						XK_s,		spawn,         		SHCMD("rofi -show ssh -monitor -4")  },
 	{ ControlMask|Mod1Mask,			XK_l,		spawn,         		SHCMD("lock")  },
-	{ MODKEY|ShiftMask,				XK_p,		spawn,         		SHCMD("passmenu -c -l 20 -z 500")  },
+	{ MODKEY|ShiftMask,				XK_p,		spawn,         		SHCMD("passmenu -p 'Pass' -monitor -4")  },
 	{ MODKEY,						XK_Print,   spawn,		   		SHCMD("flameshot gui") },
-	{ MODKEY,						XK_F6,		spawn,		   		SHCMD("$HOME/.local/bin/wm_toggle_dpms") },
-	{ MODKEY,						XK_F7,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_wal_theme") },
-	{ MODKEY,						XK_F8,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_monitor") },
+	{ MODKEY,						XK_F1,		spawn,		   		SHCMD("$HOME/.local/bin/wm_toggle_dpms") },
+	{ MODKEY,						XK_F2,		spawn,		   		SHCMD("$HOME/.local/bin/dunst_toggle_notifications") },
+	{ MODKEY,						XK_F7,		spawn,		   		SHCMD("rofi -show audio -modes 'audio:rofi_audio_output' -monitor -4") },
+	{ MODKEY,						XK_F8,		spawn,		   		SHCMD("rofi -show monitor -modes 'monitor:rofi_monitor' -monitor -4") },
 	{ MODKEY,						XK_F9,		spawn,		   		SHCMD("$HOME/.config/screenlayout/laptop.sh") },
-	{ MODKEY,						XK_F11,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_mount") },
-	{ MODKEY,						XK_F12,		spawn,		   		SHCMD("$HOME/.local/bin/dmenu_unmount") },
+	{ MODKEY,						XK_F11,		spawn,		   		SHCMD("rofi -show mount -modes 'mount:rofi_mount' -monitor -4") },
+	{ MODKEY,						XK_F12,		spawn,		   		SHCMD("rofi -show unmount -modes 'unmount:rofi_unmount' -monitor -4") },
 
-	{ MODKEY,						XK_t,		spawn,				SHCMD("st -n st_float -g 100x40") },
-	{ MODKEY,						XK_u,		spawn,				SHCMD("st -n st_float -g 100x40 -e ranger") },
-	{ MODKEY,						XK_c,		spawn,				SHCMD("st -n st_float -g 100x40 -e khal interactive") },
-	{ MODKEY,						XK_m,		spawn,				SHCMD("st -n st_float -g 100x40 -e ncmpcpp") },
+	{ MODKEY,						XK_t,		spawn,				SHCMD("alacritty --config-file $XDG_CONFIG_HOME/alacritty/float.toml") },
+	{ MODKEY,						XK_u,		spawn,				SHCMD("alacritty --config-file $XDG_CONFIG_HOME/alacritty/float.toml -e ranger") },
+	{ MODKEY,						XK_c,		spawn,				SHCMD("alacritty --config-file $XDG_CONFIG_HOME/alacritty/float.toml -e khal interactive") },
+	{ MODKEY,						XK_m,		spawn,				SHCMD("alacritty --config-file $XDG_CONFIG_HOME/alacritty/float.toml -e ncmpcpp") },
+	{ ControlMask|Mod1Mask,			XK_v,		spawn,				SHCMD("clipcat-menu") },
+
+	//{ MODKEY,						XK_t,		spawn,				SHCMD("st -n st_float -g 100x40") },
+	//{ MODKEY,						XK_u,		spawn,				SHCMD("st -n st_float -g 100x40 -e ranger") },
+	//{ MODKEY,						XK_c,		spawn,				SHCMD("st -n st_float -g 100x40 -e khal interactive") },
+	//{ MODKEY,						XK_m,		spawn,				SHCMD("st -n st_float -g 100x40 -e ncmpcpp") },
 
 	// Tags and monitors
 	{ MODKEY,                       XK_0,      view,           		{.ui = ~0 } },
@@ -177,7 +187,7 @@ static const Key keys[] = {
 	{ 0,                            XF86XK_AudioPlay,        spawn, SHCMD("mpc toggle") },
 
 	// QUIT
-	{ MODKEY|ControlMask,           XK_e,      spawn,				SHCMD("$HOME/.local/bin/dmenu_power") },
+	{ MODKEY|ControlMask,           XK_e,      spawn,				SHCMD("rofi -show power -modes 'power:rofi_power' -monitor -4") },
 };
 //static const Key keys[] = {
 //	/* modifier                     key        function        argument */
